@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const Issue = require('../models/Issue');
+const storage = require('../utils/storage');
 
 exports.createIssue = async (req, res) => {
   try {
@@ -14,7 +14,8 @@ exports.createIssue = async (req, res) => {
     const { title, description, category, latitude, longitude, address, isAnonymous } = req.body;
     const photos = req.files ? req.files.map(file => file.filename) : [];
 
-    const issueId = await Issue.create({
+    // Create issue
+    const issueId = storage.createIssue({
       title, 
       description, 
       category, 
@@ -26,7 +27,8 @@ exports.createIssue = async (req, res) => {
       isAnonymous: isAnonymous === 'true'
     });
 
-    const issue = await Issue.findById(issueId);
+    const issue = storage.findIssueById(issueId);
+    
     res.status(201).json({
       message: 'Issue reported successfully',
       issue
@@ -45,7 +47,8 @@ exports.getNearbyIssues = async (req, res) => {
       return res.status(400).json({ error: 'Latitude and longitude are required' });
     }
 
-    let issues = await Issue.findNearby(parseFloat(lat), parseFloat(lng), parseFloat(radius));
+    // Get nearby issues
+    let issues = storage.findNearbyIssues(parseFloat(lat), parseFloat(lng), parseFloat(radius));
     
     // Apply filters
     if (status && status !== 'all') {
@@ -66,13 +69,13 @@ exports.getNearbyIssues = async (req, res) => {
 exports.getIssueById = async (req, res) => {
   try {
     const { id } = req.params;
-    const issue = await Issue.findById(id);
+    const issue = storage.findIssueById(id);
     
     if (!issue) {
       return res.status(404).json({ error: 'Issue not found' });
     }
 
-    const statusHistory = await Issue.getStatusHistory(id);
+    const statusHistory = storage.getStatusHistory(id);
     
     res.json({ 
       issue: {
@@ -90,12 +93,12 @@ exports.flagIssue = async (req, res) => {
   try {
     const { id } = req.params;
     
-    const issue = await Issue.findById(id);
+    const issue = storage.findIssueById(id);
     if (!issue) {
       return res.status(404).json({ error: 'Issue not found' });
     }
 
-    await Issue.flag(id, req.userId);
+    storage.flagIssue(id, req.userId);
     res.json({ message: 'Issue flagged successfully' });
   } catch (error) {
     console.error('Flag issue error:', error);

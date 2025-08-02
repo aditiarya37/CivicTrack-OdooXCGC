@@ -1,9 +1,8 @@
-const Issue = require('../models/Issue');
-const User = require('../models/User');
+const storage = require('../utils/storage');
 
 exports.getDashboard = async (req, res) => {
   try {
-    const analytics = await Issue.getAnalytics();
+    const analytics = storage.getAnalytics();
     res.json({ analytics });
   } catch (error) {
     console.error('Admin dashboard error:', error);
@@ -20,7 +19,7 @@ exports.getAllIssues = async (req, res) => {
     if (category && category !== 'all') filters.category = category;
     if (flagged === 'true') filters.flagged = true;
 
-    const issues = await Issue.getAll(filters);
+    const issues = storage.getAllIssues(filters);
     res.json({ issues });
   } catch (error) {
     console.error('Admin get issues error:', error);
@@ -38,7 +37,11 @@ exports.updateIssueStatus = async (req, res) => {
       return res.status(400).json({ error: 'Invalid status' });
     }
 
-    await Issue.updateStatus(id, status, req.userId);
+    const success = storage.updateIssueStatus(id, status, req.userId);
+    if (!success) {
+      return res.status(404).json({ error: 'Issue not found' });
+    }
+    
     res.json({ message: 'Issue status updated successfully' });
   } catch (error) {
     console.error('Update issue status error:', error);
@@ -49,7 +52,11 @@ exports.updateIssueStatus = async (req, res) => {
 exports.hideIssue = async (req, res) => {
   try {
     const { id } = req.params;
-    await Issue.hideIssue(id);
+    const success = storage.hideIssue(id);
+    if (!success) {
+      return res.status(404).json({ error: 'Issue not found' });
+    }
+    
     res.json({ message: 'Issue hidden successfully' });
   } catch (error) {
     console.error('Hide issue error:', error);
@@ -60,7 +67,11 @@ exports.hideIssue = async (req, res) => {
 exports.unhideIssue = async (req, res) => {
   try {
     const { id } = req.params;
-    await Issue.unhideIssue(id);
+    const success = storage.unhideIssue(id);
+    if (!success) {
+      return res.status(404).json({ error: 'Issue not found' });
+    }
+    
     res.json({ message: 'Issue unhidden successfully' });
   } catch (error) {
     console.error('Unhide issue error:', error);
@@ -71,7 +82,11 @@ exports.unhideIssue = async (req, res) => {
 exports.banUser = async (req, res) => {
   try {
     const { id } = req.params;
-    await User.ban(id);
+    const success = storage.banUser(id);
+    if (!success) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
     res.json({ message: 'User banned successfully' });
   } catch (error) {
     console.error('Ban user error:', error);
@@ -81,7 +96,7 @@ exports.banUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.getAllUsers();
+    const users = storage.getAllUsers();
     res.json({ users });
   } catch (error) {
     console.error('Get users error:', error);

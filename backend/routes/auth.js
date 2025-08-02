@@ -6,12 +6,17 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 router.post('/register', [
-  body('email')
-    .isEmail()
-    .normalizeEmail()
-    .withMessage('Please provide a valid email'),
-  body('password')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters long'),
-  body('firstName')
-    .trim()
+  body('email').isEmail().normalizeEmail(),
+  body('password').isLength({ min: 6 }),
+  body('firstName').trim().isLength({ min: 1 }),
+  body('lastName').trim().isLength({ min: 1 })
+], authController.register);
+
+router.post('/login', [
+  body('email').isEmail().normalizeEmail(),
+  body('password').exists()
+], authController.login);
+
+router.get('/profile', auth, authController.getProfile);
+
+module.exports = router;
