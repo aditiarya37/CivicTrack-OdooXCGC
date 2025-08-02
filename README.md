@@ -1,10 +1,6 @@
 # CivicTrack 🛰️
 
-A decentralized, hyper-local platform that empowers citizens to report civic issues, track their resolution, and contribute to cleaner and safer neighborhoods.
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org/)
-[![React Version](https://img.shields.io/badge/react-%5E18.0.0-blue)](https://reactjs.org/)
+A decentralized, hyper-local platform that allows citizens to report civic issues, track their resolution, and contribute to cleaner and safer neighborhoods.
 
 ## 📋 Table of Contents
 
@@ -332,3 +328,4 @@ npm run test:integration
 5. Open a Pull Request
 
 *Thankyou*
+
