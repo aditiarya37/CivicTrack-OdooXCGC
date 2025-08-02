@@ -13,8 +13,6 @@ A decentralized, hyper-local platform that allows citizens to report civic issue
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
 - [Security](#security)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## 🌟 Overview
 
@@ -328,4 +326,5 @@ npm run test:integration
 5. Open a Pull Request
 
 *Thankyou*
+
 
