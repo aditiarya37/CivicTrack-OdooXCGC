@@ -50,28 +50,30 @@ Build a civic issue tracking system with the following goals:
 ## 🧱 Project Structure
 
 
-backend/
-├── routes/
-│ ├── auth.js
-│ ├── issues.js
-│ └── users.js
-├── middleware/
-│ └── authMiddleware.js
-├── models/
-│ ├── Issue.js
-│ └── User.js
-├── uploads/
-├── app.js
-└── .env
+civictrack/
+├── backend/
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── issues.js
+│   │   └── users.js
+│   ├── middleware/
+│   │   └── authMiddleware.js
+│   ├── models/
+│   │   ├── Issue.js
+│   │   └── User.js
+│   ├── uploads/             # For storing uploaded images
+│   ├── app.js
+│   └── .env
+│
+└── frontend/
+    ├── public/
+    ├── src/
+    │   ├── components/
+    │   ├── pages/
+    │   ├── context/
+    │   └── App.jsx
+    └── .env
 
-frontend/
-├── public/
-├── src/
-│ ├── components/
-│ ├── pages/
-│ ├── context/
-│ └── App.jsx
-└── .env
 
 
 
@@ -139,3 +141,4 @@ npm start
 - Error-handling middleware included
 
 - Graceful shutdown logic
+
